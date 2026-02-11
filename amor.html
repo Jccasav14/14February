@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TE AMO JOHANNA</title>
+  <style>
+    :root{
+      --bg1:#05060c;
+      --bg2:#0b1026;
+      --glow:#ff4d86;
+      --glow2:#ffb3c8;
+      --txt:#f7f7ff;
+      --muted:#c7c7da;
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.12);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      color:var(--txt);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 700px at 15% 20%, rgba(255,77,134,.25), transparent 60%),
+        radial-gradient(900px 600px at 85% 25%, rgba(140,100,255,.22), transparent 55%),
+        radial-gradient(1000px 700px at 50% 90%, rgba(0,220,255,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
+
+    /* estrellas */
+    .stars, .stars::before, .stars::after{
+      position:absolute; inset:0;
+      content:"";
+      background-repeat:repeat;
+      background-size: 300px 300px;
+      opacity:.55;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,.15));
+      animation: drift 30s linear infinite;
+      pointer-events:none;
+    }
+    .stars{
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9), transparent 60%),
+        radial-gradient(1px 1px at 90px 120px, rgba(255,255,255,.7), transparent 60%),
+        radial-gradient(1px 1px at 170px 60px, rgba(255,255,255,.8), transparent 60%),
+        radial-gradient(2px 2px at 220px 200px, rgba(255,255,255,.6), transparent 60%),
+        radial-gradient(1px 1px at 260px 40px, rgba(255,255,255,.6), transparent 60%);
+    }
+    .stars::before{
+      background-image:
+        radial-gradient(1px 1px at 40px 90px, rgba(255,255,255,.8), transparent 60%),
+        radial-gradient(2px 2px at 140px 160px, rgba(255,255,255,.6), transparent 60%),
+        radial-gradient(1px 1px at 230px 110px, rgba(255,255,255,.7), transparent 60%);
+      animation-duration: 45s;
+      opacity:.40;
+    }
+    .stars::after{
+      background-image:
+        radial-gradient(1px 1px at 60px 40px, rgba(255,255,255,.7), transparent 60%),
+        radial-gradient(1px 1px at 200px 140px, rgba(255,255,255,.55), transparent 60%),
+        radial-gradient(2px 2px at 260px 220px, rgba(255,255,255,.55), transparent 60%);
+      animation-duration: 70s;
+      opacity:.25;
+    }
+    @keyframes drift{
+      from{ transform: translate3d(0,0,0); }
+      to{ transform: translate3d(-300px, -300px, 0); }
+    }
+
+    /* layout principal */
+    .wrap{
+      position:relative;
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding: 24px;
+    }
+
+    .frame{
+      width:min(1100px, 96vw);
+      height:min(720px, 92vh);
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border: 1px solid var(--stroke);
+      box-shadow:
+        0 20px 80px rgba(0,0,0,.55),
+        0 0 70px rgba(255,77,134,.15);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+    }
+
+    .left{
+      position:relative;
+      padding: 34px 30px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .title{
+      line-height:1;
+      font-weight: 900;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+      font-size: clamp(34px, 5vw, 64px);
+      margin:0;
+      background: linear-gradient(90deg, #ffffff, #ffd4e3, #bca7ff, #ffffff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      filter: drop-shadow(0 0 14px rgba(255,77,134,.25));
+    }
+
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: clamp(14px, 2.2vw, 18px);
+      max-width: 42ch;
+    }
+
+    .chiprow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 2px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+      font-size: 13px;
+      color: rgba(255,255,255,.88);
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--glow));
+      box-shadow: 0 0 14px rgba(255,77,134,.7);
+    }
+
+    .counter{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .tile{
+      padding: 14px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow:
+        0 10px 24px rgba(0,0,0,.28),
+        inset 0 0 0 1px rgba(255,255,255,.04);
+      position:relative;
+      overflow:hidden;
+    }
+    .tile::before{
+      content:"";
+      position:absolute; inset:-60px -80px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,77,134,.22), transparent 55%),
+                  radial-gradient(circle at 70% 60%, rgba(160,120,255,.18), transparent 60%);
+      transform: rotate(8deg);
+    }
+    .tile > *{ position:relative; }
+    .num{
+      font-size: clamp(20px, 3vw, 34px);
+      font-weight: 900;
+      letter-spacing:.02em;
+    }
+    .lbl{
+      font-size: 12px;
+      color: rgba(255,255,255,.78);
+      margin-top:4px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+    }
+
+    .quote{
+      margin-top:auto;
+      padding: 14px 16px;
+      border-left: 3px solid rgba(255,77,134,.9);
+      background: rgba(0,0,0,.18);
+      border-radius: 14px;
+      color: rgba(255,255,255,.92);
+      line-height:1.5;
+      max-width: 60ch;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .quote b{
+      color:#fff;
+      text-shadow: 0 0 12px rgba(255,77,134,.35);
+    }
+
+    /* lado derecho: corazón y órbita */
+    .right{
+      position:relative;
+      display:grid;
+      place-items:center;
+      padding: 22px;
+    }
+
+    .heartStage{
+      position:relative;
+      width:min(430px, 78vw);
+      aspect-ratio: 1/1;
+      display:grid;
+      place-items:center;
+      filter: drop-shadow(0 0 26px rgba(255,77,134,.22));
+    }
+
+    /* Heart grid = "frames" tipo LED/pixel */
+    .heartGrid{
+      width: 80%;
+      aspect-ratio: 1/1;
+      display:grid;
+      grid-template-columns: repeat(17, 1fr);
+      gap: 6px;
+      transform: translateY(4px);
+    }
+    .cell{
+      width:100%;
+      aspect-ratio: 1/1;
+      border-radius: 6px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+      opacity:.25;
+      transform: translateZ(0);
+    }
+    .cell.on{
+      opacity: 1;
+      background:
+        radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.1) 28%, transparent 55%),
+        radial-gradient(circle at 60% 70%, rgba(255,255,255,.1), transparent 55%),
+        linear-gradient(180deg, rgba(255,77,134,1), rgba(255,77,134,.55));
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow:
+        0 0 18px rgba(255,77,134,.65),
+        0 0 50px rgba(255,77,134,.25),
+        inset 0 0 0 1px rgba(255,255,255,.08);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{ transform: scale(1); filter: brightness(1); }
+      50%{ transform: scale(1.04); filter: brightness(1.15); }
+    }
+
+    /* órbita con rosas girando */
+    .orbit{
+      position:absolute;
+      inset: 6%;
+      border-radius: 999px;
+      border: 1px dashed rgba(255,255,255,.16);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+      animation: spin 18s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes spin{
+      to{ transform: rotate(360deg); }
+    }
+    .rose{
+      position:absolute;
+      width: 58px; height: 58px;
+      display:grid; place-items:center;
+      filter: drop-shadow(0 0 14px rgba(255,77,134,.35));
+    }
+    .rose svg{ width:100%; height:100%; opacity:.95; }
+    .r1{ top:-8px; left: 50%; transform: translateX(-50%) rotate(10deg); }
+    .r2{ right:-8px; top: 50%; transform: translateY(-50%) rotate(35deg); }
+    .r3{ bottom:-10px; left: 50%; transform: translateX(-50%) rotate(-15deg); }
+    .r4{ left:-8px; top: 50%; transform: translateY(-50%) rotate(-35deg); }
+
+    /* árbol/tallo que sube rosas */
+    .vine{
+      position:absolute;
+      bottom:-30px;
+      left: 50%;
+      width: 10px;
+      height: 70%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(70,255,150,.0), rgba(70,255,150,.18), rgba(70,255,150,.0));
+      filter: drop-shadow(0 0 18px rgba(70,255,150,.12));
+      opacity:.8;
+      pointer-events:none;
+    }
+    .stem{
+      position:absolute;
+      bottom:0;
+      left:50%;
+      width: 3px;
+      height: 100%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(120,255,180,.0), rgba(120,255,180,.65), rgba(120,255,180,.05));
+      border-radius: 999px;
+    }
+    .bud{
+      position:absolute;
+      left:50%;
+      transform: translateX(-50%) scale(.9);
+      width: 46px; height:46px;
+      opacity:0;
+      animation: floatUp 9s linear infinite;
+      filter: drop-shadow(0 0 18px rgba(255,77,134,.25));
+    }
+    .bud:nth-child(2){ animation-delay: 0s; }
+    .bud:nth-child(3){ animation-delay: 2.2s; left: calc(50% + 18px); }
+    .bud:nth-child(4){ animation-delay: 4.4s; left: calc(50% - 18px); }
+    .bud:nth-child(5){ animation-delay: 6.6s; left: calc(50% + 8px); }
+    @keyframes floatUp{
+      0%   { bottom: -40px; opacity:0; transform: translateX(-50%) scale(.8) rotate(-10deg); }
+      10%  { opacity:1; }
+      50%  { opacity:1; }
+      90%  { opacity:0; }
+      100% { bottom: 82%; opacity:0; transform: translateX(-50%) scale(1.05) rotate(18deg); }
+    }
+
+    /* responsive */
+    @media (max-width: 880px){
+      .frame{ grid-template-columns: 1fr; height: min(880px, 92vh); }
+      .right{ padding-top: 6px; }
+      .counter{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body{ overflow:auto; }
+    }
+
+    /* botón */
+    .btnrow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+    button{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      padding: 12px 14px;
+      border-radius: 14px;
+      color: #101018;
+      font-weight: 800;
+      letter-spacing:.02em;
+      background: linear-gradient(90deg, #fff, #ffd4e3, #bca7ff);
+      box-shadow: 0 12px 30px rgba(0,0,0,.28), 0 0 26px rgba(255,77,134,.18);
+      transition: transform .15s ease, filter .2s ease;
+    }
+    button:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    button:active{ transform: translateY(1px); }
+    .smallnote{
+      font-size:12px;
+      color: rgba(255,255,255,.72);
+      margin-top:6px;
+    }
+
+    /* brillo suave */
+    .glowBlob{
+      position:absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,77,134,.25), transparent 60%),
+                  radial-gradient(circle at 70% 70%, rgba(140,100,255,.18), transparent 60%);
+      filter: blur(22px);
+      opacity:.75;
+      animation: blob 12s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes blob{
+      0%,100%{ transform: translate(-16px, 8px) scale(1); }
+      50%{ transform: translate(16px, -12px) scale(1.06); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars"></div>
+
+  <div class="wrap">
+    <div class="frame">
+      <div class="glowBlob" style="left:-140px; top:-160px;"></div>
+      <div class="glowBlob" style="right:-180px; bottom:-180px; opacity:.55;"></div>
+
+      <section class="left">
+        <h1 class="title">TE AMO JOHANNA</h1>
+        <p class="subtitle">
+          Todo comenzó desde el <b>21-marzo-2023</b>… y desde entonces, cada segundo contigo vale oro.
+        </p>
+
+        <div class="chiprow">
+          <span class="chip"><span class="dot"></span> Amor infinito</span>
+          <span class="chip"><span class="dot"></span> Promesa diaria</span>
+          <span class="chip"><span class="dot"></span> Para siempre</span>
+        </div>
+
+        <div class="counter" aria-label="contador de tiempo juntos">
+          <div class="tile">
+            <div class="num" id="days">0</div>
+            <div class="lbl">Días</div>
+          </div>
+          <div class="tile">
+            <div class="num" id="hours">0</div>
+            <div class="lbl">Horas</div>
+          </div>
+          <div class="tile">
+            <div class="num" id="minutes">0</div>
+            <div class="lbl">Minutos</div>
+          </div>
+          <div class="tile">
+            <div class="num" id="seconds">0</div>
+            <div class="lbl">Segundos</div>
+          </div>
+        </div>
+
+        <div class="btnrow">
+          <button id="sparkBtn">💖 Lluvia de corazones</button>
+          <button id="toggleOrbit">🌹 Más rosas</button>
+        </div>
+
+        <div class="quote" id="quote">
+          <b></b> “Eres mi lugar favorito en el mundo, incluso cuando el mundo cambia.”
+        </div>
+      </section>
+
+      <section class="right">
+        <div class="heartStage">
+          <div class="orbit" id="orbit">
+            <div class="rose r1" aria-hidden="true"></div>
+            <div class="rose r2" aria-hidden="true"></div>
+            <div class="rose r3" aria-hidden="true"></div>
+            <div class="rose r4" aria-hidden="true"></div>
+          </div>
+
+          <div class="heartGrid" id="heartGrid" aria-label="corazón de frames"></div>
+
+          <div class="vine" aria-hidden="true">
+            <div class="stem"></div>
+
+            <!-- rosas que suben -->
+            <div class="bud"></div>
+            <div class="bud"></div>
+            <div class="bud"></div>
+            <div class="bud"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // === 1) Corazón en "frames" (pixel/LED) ===
+    // 17x17 corazón (1 = encendido)
+    const heartMap = [
+      "00001100000011000",
+      "00011110000111100",
+      "00111111001111110",
+      "01111111111111111",
+      "01111111111111111",
+      "01111111111111111",
+      "00111111111111110",
+      "00011111111111100",
+      "00001111111111000",
+      "00000111111110000",
+      "00000011111100000",
+      "00000001111000000",
+      "00000000110000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+      "00000000000000000",
+    ];
+
+    const grid = document.getElementById("heartGrid");
+    for(let r=0; r<heartMap.length; r++){
+      for(let c=0; c<heartMap[r].length; c++){
+        const cell = document.createElement("div");
+        cell.className = "cell" + (heartMap[r][c] === "1" ? " on" : "");
+        // pequeño "parpadeo" aleatorio
+        if(heartMap[r][c] === "1"){
+          cell.style.animationDelay = (Math.random()*1.6).toFixed(2) + "s";
+        }
+        grid.appendChild(cell);
+      }
+    }
+
+    // === 2) Rosas SVG ===
+    function roseSVG(){
+      return `
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="g" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+              gradientTransform="translate(24 22) rotate(45) scale(46)">
+              <stop stop-color="#ffffff" stop-opacity=".95"/>
+              <stop offset=".22" stop-color="#ffd4e3" stop-opacity=".9"/>
+              <stop offset=".55" stop-color="#ff4d86" stop-opacity=".95"/>
+              <stop offset="1" stop-color="#8c64ff" stop-opacity=".9"/>
+            </radialGradient>
+          </defs>
+          <path d="M32 10c7 0 12 5 12 11 0 4-2 7-5 9 5 1 9 5 9 10 0 7-6 13-16 13S16 47 16 40c0-5 4-9 9-10-3-2-5-5-5-9 0-6 5-11 12-11z"
+            fill="url(#g)" opacity=".95"/>
+          <path d="M20 40c4-4 8-6 12-6s8 2 12 6" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M24 28c3-3 5-4 8-4s5 1 8 4" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M22 52c4-5 8-7 10-7s6 2 10 7" stroke="rgba(0,255,180,.35)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+
+    // poner rosas en la órbita
+    document.querySelectorAll(".orbit .rose").forEach(el => el.innerHTML = roseSVG());
+    // y en los capullos que suben
+    document.querySelectorAll(".bud").forEach(el => el.innerHTML = roseSVG());
+
+    // === 3) Contador desde 21-marzo-2023 hasta hoy ===
+    // Nota: usamos hora local del navegador.
+    const start = new Date(2023, 2, 21, 0, 0, 0); // (mes 0=enero) => 2 = marzo
+    const elDays = document.getElementById("days");
+    const elHours = document.getElementById("hours");
+    const elMinutes = document.getElementById("minutes");
+    const elSeconds = document.getElementById("seconds");
+
+    function pad(n){ return String(n).padStart(2,"0"); }
+
+    function tick(){
+      const now = new Date();
+      let diff = now - start;
+      if(diff < 0) diff = 0;
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / (24*3600));
+      const hours = Math.floor((totalSeconds % (24*3600)) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      elDays.textContent = days;
+      elHours.textContent = pad(hours);
+      elMinutes.textContent = pad(minutes);
+      elSeconds.textContent = pad(seconds);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // === 4) Interacción: lluvia de corazones ===
+    const sparkBtn = document.getElementById("sparkBtn");
+    sparkBtn.addEventListener("click", () => {
+      for(let i=0;i<24;i++){
+        spawnHeart();
+      }
+    });
+
+    function spawnHeart(){
+      const h = document.createElement("div");
+      h.textContent = Math.random() > .5 ? "💖" : "💗";
+      h.style.position = "absolute";
+      h.style.left = (Math.random()*100) + "vw";
+      h.style.top = "-40px";
+      h.style.fontSize = (16 + Math.random()*22) + "px";
+      h.style.filter = "drop-shadow(0 0 12px rgba(255,77,134,.45))";
+      h.style.opacity = "0.95";
+      h.style.pointerEvents = "none";
+      h.style.transition = "transform 2.8s linear, opacity 2.8s linear";
+      document.body.appendChild(h);
+
+      const driftX = (Math.random()*160 - 80);
+      const fallY = window.innerHeight + 120;
+
+      requestAnimationFrame(() => {
+        h.style.transform = `translate(${driftX}px, ${fallY}px) rotate(${Math.random()*120-60}deg)`;
+        h.style.opacity = "0";
+      });
+
+      setTimeout(() => h.remove(), 3000);
+    }
+
+    // === 5) Toggle rosas (más velocidad / show) ===
+    const orbit = document.getElementById("orbit");
+    const toggleOrbit = document.getElementById("toggleOrbit");
+    let fast = false;
+    toggleOrbit.addEventListener("click", () => {
+      fast = !fast;
+      orbit.style.animationDuration = fast ? "8s" : "18s";
+      orbit.style.borderStyle = fast ? "solid" : "dashed";
+      orbit.style.borderColor = fast ? "rgba(255,77,134,.26)" : "rgba(255,255,255,.16)";
+    });
+
+    // === 6) Frases (puedes cambiar/añadir) ===
+    const quotes = [
+      "“Eres mi lugar favorito en el mundo, incluso cuando el mundo cambia.”",
+      "“Contigo, lo simple se vuelve mágico.”",
+      "“Te elijo hoy, mañana y siempre.”",
+      "“El tiempo que hemos comaprtido es inolvidable.”",
+      "“Toda mi felicidad es tuya.”",
+      "“Decidire todo contigo como mi primera opción.”",
+      "“Los sueños se hacen realidad a tu lado, siempre me has dado felicidad.”",
+      "“MI 21.”",
+      "“Te amo hasta no poder contar las palabras.”",
+      "“Sabes que tu eres mi princesa no hay nadie mejor que tu.”",
+      "“Mi corazón encontró hogar en ti.”"
+    ];
+    const qEl = document.getElementById("quote");
+    let qi = 0;
+    setInterval(() => {
+      qi = (qi + 1) % quotes.length;
+      qEl.innerHTML = ` ${quotes[qi]}`;
+    }, 9000);
+  </script>
+</body>
+</html>
